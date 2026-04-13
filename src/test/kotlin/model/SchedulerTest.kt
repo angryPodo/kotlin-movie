@@ -39,6 +39,26 @@ class SchedulerTest {
     }
 
     @Test
+    fun `상영 기간 내 다른 날짜에도 Screenings를 반환한다`() {
+        val movies = scheduler.getMovies()
+        val f1Movie = movies.findByTitle("F1 더 무비")!!
+
+        val screenings = scheduler.getScreenings(f1Movie, LocalDate.of(2025, 9, 1))
+
+        assertThat(screenings).hasSize(4)
+    }
+
+    @Test
+    fun `상영 기간 밖의 날짜는 빈 Screenings를 반환한다`() {
+        val movies = scheduler.getMovies()
+        val f1Movie = movies.findByTitle("F1 더 무비")!!
+
+        val screenings = scheduler.getScreenings(f1Movie, LocalDate.of(2025, 10, 1))
+
+        assertThat(screenings.isEmpty()).isTrue()
+    }
+
+    @Test
     fun `전체 영화 목록을 반환한다`() {
         val movies = scheduler.getMovies()
 

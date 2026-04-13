@@ -58,8 +58,6 @@ class Scheduler {
                     ),
             )
 
-        private val BASE_DATE: LocalDate = LocalDate.of(2025, 9, 20)
-
         private fun defaultSeats(): Seats =
             Seats(
                 ('A'..'B').flatMap { row ->
@@ -93,43 +91,30 @@ class Scheduler {
             val screen2 = Screen("2관", defaultSeats())
             val screen3 = Screen("3관", defaultSeats())
 
-            return listOf(
-                Screening(
-                    F1_THE_MOVIE,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(10, 20)),
-                    screen1,
-                ),
-                Screening(
-                    F1_THE_MOVIE,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(13, 0)),
-                    screen1,
-                ),
-                Screening(
-                    F1_THE_MOVIE,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(15, 40)),
-                    screen1,
-                ),
-                Screening(
-                    F1_THE_MOVIE,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(20, 10)),
-                    screen1,
-                ),
-                Screening(
-                    TOY_STORY,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(13, 30)),
-                    screen2,
-                ),
-                Screening(
-                    TOY_STORY,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(16, 0)),
-                    screen2,
-                ),
-                Screening(
-                    IRON_MAN,
-                    LocalDateTime.of(BASE_DATE, LocalTime.of(9, 50)),
-                    screen3,
-                ),
-            )
+            return generateDates(F1_THE_MOVIE).flatMap { date ->
+                listOf(
+                    Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(10, 20)), screen1),
+                    Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(13, 0)), screen1),
+                    Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(15, 40)), screen1),
+                    Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(20, 10)), screen1),
+                )
+            } + generateDates(TOY_STORY).flatMap { date ->
+                listOf(
+                    Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(13, 30)), screen2),
+                    Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(16, 0)), screen2),
+                )
+            } + generateDates(IRON_MAN).flatMap { date ->
+                listOf(
+                    Screening(IRON_MAN, LocalDateTime.of(date, LocalTime.of(9, 50)), screen3),
+                )
+            }
+        }
+
+        private fun generateDates(movie: Movie): List<LocalDate> {
+            val period = movie.showingPeriod
+            return generateSequence(period.startDate) { it.plusDays(1) }
+                .takeWhile { !it.isAfter(period.endDate) }
+                .toList()
         }
     }
 }
