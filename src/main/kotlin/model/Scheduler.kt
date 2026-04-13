@@ -98,16 +98,18 @@ class Scheduler {
                     Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(15, 40)), screen1),
                     Screening(F1_THE_MOVIE, LocalDateTime.of(date, LocalTime.of(20, 10)), screen1),
                 )
-            } + generateDates(TOY_STORY).flatMap { date ->
-                listOf(
-                    Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(13, 30)), screen2),
-                    Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(16, 0)), screen2),
-                )
-            } + generateDates(IRON_MAN).flatMap { date ->
-                listOf(
-                    Screening(IRON_MAN, LocalDateTime.of(date, LocalTime.of(9, 50)), screen3),
-                )
-            }
+            } +
+                generateDates(TOY_STORY).flatMap { date ->
+                    listOf(
+                        Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(13, 30)), screen2),
+                        Screening(TOY_STORY, LocalDateTime.of(date, LocalTime.of(16, 0)), screen2),
+                    )
+                } +
+                generateDates(IRON_MAN).flatMap { date ->
+                    listOf(
+                        Screening(IRON_MAN, LocalDateTime.of(date, LocalTime.of(9, 50)), screen3),
+                    )
+                }
         }
 
         private fun generateDates(movie: Movie): List<LocalDate> {
