@@ -3,6 +3,7 @@ package model
 import model.movie.Movie
 import model.movie.RunningTime
 import model.movie.ShowingPeriod
+import model.reservation.Reservation
 import model.reservation.Reservations
 import model.screening.Screening
 import model.seat.Seat
@@ -43,19 +44,23 @@ class ReservationsTest {
 
     @Test
     fun `시간이 겹치는 상영을 예매하면 예외가 발생한다`() {
-        val reservation1 = screening(14).reserve(listOf(SeatNumber('A', 1)))
+        val screening14 = screening(14)
+        val reservation1 = Reservation(screening14, screening14.reserve(listOf(SeatNumber('A', 1))))
         val reservations = Reservations().addReservation(reservation1)
 
         assertThrows(IllegalArgumentException::class.java) {
-            val reservation2 = screening(15).reserve(listOf(SeatNumber('A', 1)))
+            val screening15 = screening(15)
+            val reservation2 = Reservation(screening15, screening15.reserve(listOf(SeatNumber('A', 1))))
             reservations.addReservation(reservation2)
         }
     }
 
     @Test
     fun `시간이 겹치지 않는 상영을 예매할 수 있다`() {
-        val reservation1 = screening(14).reserve(listOf(SeatNumber('A', 1)))
-        val reservation2 = screening(16).reserve(listOf(SeatNumber('A', 1)))
+        val screening14 = screening(14)
+        val screening16 = screening(16)
+        val reservation1 = Reservation(screening14, screening14.reserve(listOf(SeatNumber('A', 1))))
+        val reservation2 = Reservation(screening16, screening16.reserve(listOf(SeatNumber('A', 1))))
 
         val reservations =
             Reservations()

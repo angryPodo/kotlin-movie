@@ -3,6 +3,7 @@ package model
 import model.movie.Movie
 import model.movie.RunningTime
 import model.movie.ShowingPeriod
+import model.reservation.Reservation
 import model.screening.Screening
 import model.seat.Seat
 import model.seat.SeatGrade
@@ -114,7 +115,8 @@ class ScreeningTest {
     @Test
     fun `예약 결과의 기본 가격이 올바르게 계산된다`() {
         val screening = screening(14)
-        val reservation = screening.reserve(listOf(SeatNumber('A', 1), SeatNumber('B', 1)))
+        val seats = screening.reserve(listOf(SeatNumber('A', 1), SeatNumber('B', 1)))
+        val reservation = Reservation(screening, seats)
 
         assertThat(reservation.calculateBasePrice()).isEqualTo(Money(12_000 + 18_000))
     }

@@ -70,7 +70,8 @@ class MovieReservationController(
         )
         return retryUntilValid {
             val seatsNumber = inputView.readSeatsNumber()
-            selectedScreening.reserve(seatsNumber)
+            val seats = selectedScreening.reserve(seatsNumber)
+            Reservation(selectedScreening, seats)
         }
     }
 

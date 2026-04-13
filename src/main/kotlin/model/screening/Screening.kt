@@ -2,7 +2,6 @@ package model.screening
 
 import model.Screen
 import model.movie.Movie
-import model.reservation.Reservation
 import model.seat.SeatNumber
 import model.seat.Seats
 import java.time.LocalDate
@@ -25,14 +24,14 @@ class Screening(
     val startShowTime: LocalTime
         get() = startDateTime.toLocalTime()
 
-    fun reserve(seatNumbers: List<SeatNumber>): Reservation {
+    fun reserve(seatNumbers: List<SeatNumber>): Seats {
         require(seatNumbers.distinct().size == seatNumbers.size) { "중복된 좌석은 선택할 수 없습니다." }
         seatNumbers.forEach {
             require(!reservedSeatNumbers.contains(it)) { "이미 예약된 좌석입니다." }
         }
         val selectedSeats = seatNumbers.map { screen.seats.findSeat(it) }
         reservedSeatNumbers.addAll(seatNumbers)
-        return Reservation(this, Seats(selectedSeats))
+        return Seats(selectedSeats)
     }
 
     fun availableSeats(): Seats = screen.seats.excludeReserved(reservedSeatNumbers)

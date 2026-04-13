@@ -8,6 +8,7 @@ import model.discount.TimeDiscountPolicy
 import model.movie.Movie
 import model.movie.RunningTime
 import model.movie.ShowingPeriod
+import model.reservation.Reservation
 import model.reservation.Reservations
 import model.screening.Screening
 import model.seat.Seat
@@ -58,7 +59,7 @@ class PaymentSystemTest {
             )
         val reservations =
             Reservations()
-                .addReservation(bothDiscountScreening().reserve(listOf(SeatNumber('A', 1))))
+                .addReservation(bothDiscountScreening().let { s -> Reservation(s, s.reserve(listOf(SeatNumber('A', 1)))) })
 
         val result = paymentSystem.pay(reservations, Point(0))
 
@@ -75,7 +76,7 @@ class PaymentSystemTest {
             )
         val reservations =
             Reservations()
-                .addReservation(normalScreening().reserve(listOf(SeatNumber('A', 1))))
+                .addReservation(normalScreening().let { s -> Reservation(s, s.reserve(listOf(SeatNumber('A', 1)))) })
 
         val result = paymentSystem.pay(reservations, Point(2_000))
 
@@ -92,7 +93,7 @@ class PaymentSystemTest {
             )
         val reservations =
             Reservations()
-                .addReservation(normalScreening().reserve(listOf(SeatNumber('A', 1))))
+                .addReservation(normalScreening().let { s -> Reservation(s, s.reserve(listOf(SeatNumber('A', 1)))) })
 
         val result = paymentSystem.pay(reservations, Point(2_000))
 
@@ -109,7 +110,7 @@ class PaymentSystemTest {
             )
         val reservations =
             Reservations()
-                .addReservation(normalScreening().reserve(listOf(SeatNumber('A', 1))))
+                .addReservation(normalScreening().let { s -> Reservation(s, s.reserve(listOf(SeatNumber('A', 1)))) })
 
         val result = paymentSystem.pay(reservations, Point(0))
 
@@ -126,7 +127,7 @@ class PaymentSystemTest {
             )
         val reservations =
             Reservations()
-                .addReservation(normalScreening().reserve(listOf(SeatNumber('A', 1))))
+                .addReservation(normalScreening().let { s -> Reservation(s, s.reserve(listOf(SeatNumber('A', 1)))) })
 
         val result = paymentSystem.pay(reservations, Point(0))
 
