@@ -26,8 +26,8 @@ object OutputView {
     ) {
         println("\n좌석 배치도")
 
-        val row = 'A'..'E'
-        val column = 1..4
+        val row = SeatNumber.ROWS
+        val column = SeatNumber.COLUMNS
 
         println("    " + column.joinToString(separator = "    ") { "$it" })
         row.forEach { row ->
