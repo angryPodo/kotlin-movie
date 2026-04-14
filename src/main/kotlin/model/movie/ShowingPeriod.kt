@@ -9,5 +9,4 @@ data class ShowingPeriod(
     init {
         require(startDate <= endDate) { "시작일이 종료일보다 이후일 수 없습니다." }
     }
-
 }
