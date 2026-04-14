@@ -28,6 +28,7 @@ class SeatNumberTest {
         val actual = SeatNumber('A', 1)
 
         // then
-        assertThat(actual.toString()).isEqualTo("A1")
+        assertThat(actual.row).isEqualTo('A')
+        assertThat(actual.column).isEqualTo(1)
     }
 }

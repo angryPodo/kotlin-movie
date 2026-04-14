@@ -84,7 +84,7 @@ object OutputView {
     private fun formatReservation(reservation: Reservation): String {
         val movieTitle = reservation.movieTitle()
         val startDateTime = reservation.startDateTime().format(dateTimeFormatter)
-        val seatNumbers = reservation.seats.seatNumbers().joinToString(", ")
+        val seatNumbers = reservation.seats.seatNumbers().joinToString(", ") { "${it.row}${it.column}" }
         return "- [$movieTitle] $startDateTime  좌석: $seatNumbers"
     }
 
