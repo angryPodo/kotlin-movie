@@ -29,30 +29,6 @@ class MoviesTest {
     }
 
     @Test
-    fun `영화목록에 찾는 영화가 있으면 true를 반환한다`() {
-        val movies = Movies(listOf(movie1))
-
-        assertThat(movies.isInclude(movie1)).isTrue()
-    }
-
-    @Test
-    fun `영화목록에 찾는 영화가 없으면 false를 반환한다`() {
-        val movie2 =
-            Movie(
-                title = "스파이더맨2",
-                runningTime = RunningTime(120L),
-                showingPeriod =
-                    ShowingPeriod(
-                        startDate = LocalDate.of(2026, 4, 1),
-                        endDate = LocalDate.of(2026, 4, 8),
-                    ),
-            )
-        val movies = Movies(listOf(movie1))
-
-        assertThat(movies.isInclude(movie2)).isFalse()
-    }
-
-    @Test
     fun `제목으로 영화를 찾을 수 있다`() {
         val movies = Movies(listOf(movie1))
 

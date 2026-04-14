@@ -62,6 +62,6 @@ class SchedulerTest {
     fun `전체 영화 목록을 반환한다`() {
         val movies = scheduler.getMovies()
 
-        assertThat(movies.isInclude(movies.findByTitle("F1 더 무비")!!)).isTrue()
+        assertThat(movies.findByTitle("F1 더 무비")).isNotNull()
     }
 }
