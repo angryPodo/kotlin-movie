@@ -49,3 +49,53 @@ db/             — JDBC 구현체, ConnectionManager, 스키마
 - `JdbcMovieRepositoryTest` (영화 목록 조회)
 - `JdbcScreeningRepositoryTest` (상영 조회, 예약 좌석 복원)
 - `JdbcReservationRepositoryTest` (예약 저장, 중복 좌석 검증)
+
+---
+
+## 🚀 4단계 - 영화 예매(프레임워크)
+
+### 구현 전략
+
+- Spring Boot를 추가하되 기존 도메인 객체 및 Repository 변경을 최소화한다.
+- 콘솔 앱(`Application.kt`)과 Spring Boot 앱(`MovieApplication.kt`)을 분리한다.
+- 기존 JDBC Repository를 Spring `@Bean`으로 등록해 재사용한다.
+- 요청/응답 DTO는 `api/dto` 패키지에 분리한다.
+
+### 패키지 구조
+
+```
+model/              — 핵심 비즈니스 로직 (기존 유지)
+repository/         — Repository 인터페이스 (기존 유지)
+db/                 — JDBC 구현체 (기존 유지)
+api/config/         — Spring Bean 설정
+api/controller/     — HTTP API 컨트롤러
+api/dto/            — 요청/응답 DTO
+api/exception/      — 전역 예외 처리
+```
+
+### 기능 목록
+
+#### 1. Spring Boot 의존성 추가 및 앱 구성
+
+- `build.gradle.kts`에 Spring Boot 의존성 추가
+- `MovieApplication.kt` 작성 (`@SpringBootApplication`)
+- `AppConfig.kt` 작성 (Repository Bean 등록, DataInitializer 실행)
+- `application.properties` 설정 (H2 파일 기반 datasource)
+
+#### 2. GET /api/movies 엔드포인트 구현
+
+- `ScreeningRepository`에 `findById` 추가
+- `MovieQueryService` 구현 (영화+상영 ID 포함 조회)
+- `MovieController` 구현
+- `MoviesResponse`, `MovieResponse`, `ScreeningResponse` DTO 구현
+
+#### 3. POST /api/reservations 엔드포인트 구현
+
+- `ReservationController` 구현 (`201 Created`)
+- `CreateReservationRequest`, `CreateReservationResponse` DTO 구현
+- `GlobalExceptionHandler` 구현 (400 Bad Request 처리)
+
+#### 4. HTTP API 테스트 작성
+
+- `MovieApiTest` (200 OK, 응답 구조 검증)
+- `ReservationApiTest` (201 Created, 결제 금액 검증, 예외 케이스)
