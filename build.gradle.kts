@@ -30,6 +30,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+springBoot {
+    mainClass.set("application.MovieApplicationKt")
+}
+
 tasks {
     test {
         useJUnitPlatform()
