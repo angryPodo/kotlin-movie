@@ -1,5 +1,6 @@
 package repository
 
+import model.screening.Screening
 import model.screening.Screenings
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -14,4 +15,6 @@ interface ScreeningRepository {
         movieId: Long,
         startDateTime: LocalDateTime,
     ): Long?
+
+    fun findById(screeningId: Long): Screening?
 }

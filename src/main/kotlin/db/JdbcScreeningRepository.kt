@@ -67,6 +67,39 @@ class JdbcScreeningRepository(private val connection: Connection) : ScreeningRep
         return if (rs.next()) rs.getLong("id") else null
     }
 
+    override fun findById(screeningId: Long): Screening? {
+        val stmt =
+            connection.prepareStatement(
+                """
+                SELECT s.id, s.start_date_time, s.screen_name,
+                       m.title, m.running_time_minutes,
+                       m.showing_period_start, m.showing_period_end
+                FROM screenings s
+                JOIN movies m ON s.movie_id = m.id
+                WHERE s.id = ?
+                """.trimIndent(),
+            )
+        stmt.setLong(1, screeningId)
+        val rs = stmt.executeQuery()
+        if (!rs.next()) return null
+        val movie =
+            Movie(
+                title = rs.getString("title"),
+                runningTime = RunningTime(rs.getLong("running_time_minutes")),
+                showingPeriod =
+                    ShowingPeriod(
+                        startDate = rs.getDate("showing_period_start").toLocalDate(),
+                        endDate = rs.getDate("showing_period_end").toLocalDate(),
+                    ),
+            )
+        return Screening(
+            movie = movie,
+            startDateTime = rs.getTimestamp("start_date_time").toLocalDateTime(),
+            screen = Screen(rs.getString("screen_name"), defaultSeats()),
+            reservedSeatNumbers = findReservedSeatNumbers(screeningId),
+        )
+    }
+
     private fun findMovie(movieId: Long): Movie? {
         val stmt =
             connection.prepareStatement(
