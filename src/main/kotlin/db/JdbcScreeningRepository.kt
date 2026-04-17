@@ -16,7 +16,9 @@ import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class JdbcScreeningRepository(private val connection: Connection) : ScreeningRepository {
+class JdbcScreeningRepository(
+    private val connection: Connection,
+) : ScreeningRepository {
     override fun findByMovieIdAndDate(
         movieId: Long,
         date: LocalDate,

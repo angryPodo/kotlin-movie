@@ -7,7 +7,9 @@ import model.movie.ShowingPeriod
 import repository.MovieRepository
 import java.sql.Connection
 
-class JdbcMovieRepository(private val connection: Connection) : MovieRepository {
+class JdbcMovieRepository(
+    private val connection: Connection,
+) : MovieRepository {
     override fun findAll(): Movies {
         val rs =
             connection.createStatement().executeQuery(

@@ -38,13 +38,14 @@ class ReservationApiTest(
                   "paymentMethod": "CREDIT_CARD"
                 }
                 """.trimIndent(),
-            )
-            .exchange()
+            ).exchange()
             .expectStatus()
             .isCreated
             .expectBody()
-            .jsonPath("$.reservationId").exists()
-            .jsonPath("$.totalPrice").exists()
+            .jsonPath("$.reservationId")
+            .exists()
+            .jsonPath("$.totalPrice")
+            .exists()
     }
 
     @Test
@@ -61,12 +62,12 @@ class ReservationApiTest(
                   "paymentMethod": "CASH"
                 }
                 """.trimIndent(),
-            )
-            .exchange()
+            ).exchange()
             .expectStatus()
             .isCreated
             .expectBody()
-            .jsonPath("$.totalPrice").isEqualTo(14700)
+            .jsonPath("$.totalPrice")
+            .isEqualTo(14700)
     }
 
     @Test
@@ -83,8 +84,7 @@ class ReservationApiTest(
                   "paymentMethod": "CREDIT_CARD"
                 }
                 """.trimIndent(),
-            )
-            .exchange()
+            ).exchange()
             .expectStatus()
             .isBadRequest
     }
@@ -100,10 +100,22 @@ class ReservationApiTest(
             }
             """.trimIndent()
 
-        client.post().uri("/api/reservations").contentType(MediaType.APPLICATION_JSON).body(body)
-            .exchange().expectStatus().isCreated
+        client
+            .post()
+            .uri("/api/reservations")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(body)
+            .exchange()
+            .expectStatus()
+            .isCreated
 
-        client.post().uri("/api/reservations").contentType(MediaType.APPLICATION_JSON).body(body)
-            .exchange().expectStatus().isBadRequest
+        client
+            .post()
+            .uri("/api/reservations")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(body)
+            .exchange()
+            .expectStatus()
+            .isBadRequest
     }
 }

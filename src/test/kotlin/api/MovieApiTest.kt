@@ -26,24 +26,37 @@ class MovieApiTest(
 
     @Test
     fun `영화 목록 조회 시 200 OK를 반환한다`() {
-        client.get().uri("/api/movies")
+        client
+            .get()
+            .uri("/api/movies")
             .exchange()
-            .expectStatus().isOk
+            .expectStatus()
+            .isOk
     }
 
     @Test
     fun `영화 목록 응답에 영화와 상영 정보가 포함된다`() {
-        client.get().uri("/api/movies")
+        client
+            .get()
+            .uri("/api/movies")
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectBody()
-            .jsonPath("$.movies").isArray()
-            .jsonPath("$.movies[0].id").exists()
-            .jsonPath("$.movies[0].title").exists()
-            .jsonPath("$.movies[0].runningTimeMinutes").exists()
-            .jsonPath("$.movies[0].screenings").isArray()
-            .jsonPath("$.movies[0].screenings[0].id").exists()
-            .jsonPath("$.movies[0].screenings[0].startAt").exists()
-            .jsonPath("$.movies[0].screenings[0].endAt").exists()
+            .jsonPath("$.movies")
+            .isArray()
+            .jsonPath("$.movies[0].id")
+            .exists()
+            .jsonPath("$.movies[0].title")
+            .exists()
+            .jsonPath("$.movies[0].runningTimeMinutes")
+            .exists()
+            .jsonPath("$.movies[0].screenings")
+            .isArray()
+            .jsonPath("$.movies[0].screenings[0].id")
+            .exists()
+            .jsonPath("$.movies[0].screenings[0].startAt")
+            .exists()
+            .jsonPath("$.movies[0].screenings[0].endAt")
+            .exists()
     }
 }

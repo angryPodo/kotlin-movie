@@ -7,7 +7,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-class DataInitializer(private val connection: Connection) {
+class DataInitializer(
+    private val connection: Connection,
+) {
     fun initialize() {
         createSchema()
         if (isMoviesEmpty()) {
@@ -18,10 +20,13 @@ class DataInitializer(private val connection: Connection) {
 
     private fun createSchema() {
         val schema =
-            javaClass.getResourceAsStream("/schema.sql")
-                ?.bufferedReader()?.readText()
+            javaClass
+                .getResourceAsStream("/schema.sql")
+                ?.bufferedReader()
+                ?.readText()
                 ?: error("schema.sql을 찾을 수 없습니다.")
-        schema.split(";")
+        schema
+            .split(";")
             .map { it.trim() }
             .filter { it.isNotBlank() }
             .forEach { connection.createStatement().execute(it) }

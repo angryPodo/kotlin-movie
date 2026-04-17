@@ -34,7 +34,11 @@ class ReservationController(
     ): CreateReservationResponse {
         val reservations = buildReservations(request)
         val paymentMethod = request.paymentMethod.toPaymentMethod()
-        val payResult = PaymentSystem(listOf(MovieDayDiscountPolicy, TimeDiscountPolicy), paymentMethod).pay(reservations, Point(request.usedPoints))
+        val payResult =
+            PaymentSystem(
+                listOf(MovieDayDiscountPolicy, TimeDiscountPolicy),
+                paymentMethod,
+            ).pay(reservations, Point(request.usedPoints))
         val reservationId = reservationRepository.save(reservations)
         return CreateReservationResponse(
             reservationId = reservationId,

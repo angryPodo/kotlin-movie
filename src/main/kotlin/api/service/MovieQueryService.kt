@@ -5,7 +5,9 @@ import api.dto.MoviesResponse
 import api.dto.ScreeningResponse
 import java.sql.Connection
 
-class MovieQueryService(private val connection: Connection) {
+class MovieQueryService(
+    private val connection: Connection,
+) {
     fun findAll(): MoviesResponse {
         val sql =
             """
@@ -17,7 +19,12 @@ class MovieQueryService(private val connection: Connection) {
             """.trimIndent()
         val rs = connection.createStatement().executeQuery(sql)
 
-        data class Row(val id: Long, val title: String, val minutes: Long, val screenings: MutableList<ScreeningResponse> = mutableListOf())
+        data class Row(
+            val id: Long,
+            val title: String,
+            val minutes: Long,
+            val screenings: MutableList<ScreeningResponse> = mutableListOf(),
+        )
 
         val map = linkedMapOf<Long, Row>()
         while (rs.next()) {

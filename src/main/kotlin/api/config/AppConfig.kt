@@ -15,7 +15,9 @@ import repository.ScreeningRepository
 import java.sql.DriverManager
 
 @Configuration
-class AppConfig(@Value("\${db.url:jdbc:h2:~/kotlin-movie}") private val dbUrl: String) {
+class AppConfig(
+    @Value("\${db.url:jdbc:h2:~/kotlin-movie}") private val dbUrl: String,
+) {
     private val connection = DriverManager.getConnection(dbUrl, "sa", "")
 
     @Bean
